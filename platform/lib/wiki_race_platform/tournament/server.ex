@@ -360,8 +360,8 @@ defmodule WikiRacePlatform.Tournament.Server do
     with {:ok, node_a} <- fetch_node(node_mapping, a),
          {:ok, node_b} <- fetch_node(node_mapping, b) do
       new_config(state, [
-        %{node: node_a, label: a, module: nil},
-        %{node: node_b, label: b, module: nil}
+        %{node: node_a, label: a, module: Player.JaccardSimilarityCrawler},
+        %{node: node_b, label: b, module: Player.RandomCrawler}
       ])
     end
   end
