@@ -1,9 +1,6 @@
 defmodule Player.Application do
   @moduledoc """
-  Starts the application.
-
-  Add your supervisors to `children`. The list starts empty, so no crawler runs until
-  you add one.
+  Supervises independent race coordinators.
   """
 
   use Application
@@ -11,9 +8,10 @@ defmodule Player.Application do
   @impl true
   def start(_type, _args) do
     children = [
-    {DynamicSupervisor, name: WikiRace.CrawlerSupervisor, strategy: :one_for_one}
-  ]
+      Player.BFS.Progress,
+      {DynamicSupervisor, name: WikiRace.CrawlerSupervisor, strategy: :one_for_one}
+    ]
 
-    Supervisor.start_link(children, strategy: :one_for_one, name: Player.Supervisor)
+    Supervisor.start_link(children, strategy: :rest_for_one, name: Player.Supervisor)
   end
 end

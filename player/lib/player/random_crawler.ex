@@ -4,9 +4,7 @@ defmodule Player.RandomCrawler do
   Spawns multiple parallel random walkers that explore paths independently
   while sharing progress and reporting successes immediately.
   """
-  @behaviour WikiRace.Crawler
 
-  @impl true
   def start(start_url, target_url) do
     DynamicSupervisor.start_child(
       WikiRace.CrawlerSupervisor,
@@ -14,7 +12,6 @@ defmodule Player.RandomCrawler do
     )
   end
 
-  @impl true
   def status(pid), do: GenServer.call(pid, :status)
 end
 

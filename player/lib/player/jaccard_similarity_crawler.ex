@@ -2,9 +2,7 @@ defmodule Player.JaccardSimilarityCrawler do
   @moduledoc """
   An OTP-based A* Search crawler for WikiRace using Token Jaccard Similarity heuristic.
   """
-  @behaviour WikiRace.Crawler
 
-  @impl true
   def start(start_url, target_url) do
     DynamicSupervisor.start_child(
       WikiRace.CrawlerSupervisor,
@@ -12,7 +10,6 @@ defmodule Player.JaccardSimilarityCrawler do
     )
   end
 
-  @impl true
   def status(pid), do: GenServer.call(pid, :status)
 end
 

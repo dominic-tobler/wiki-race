@@ -1,20 +1,22 @@
 defmodule Player.Crawler do
   @moduledoc """
-  Your crawler.
-
-  The harness calls `start/2` and `status/1` of this module. Both raise until you
-  implement them. `WikiRace.Crawler` describes what each one must do.
+  The active, supervised concurrent breadth-first crawler.
   """
 
   @behaviour WikiRace.Crawler
 
   @impl WikiRace.Crawler
-  def start(_start_url, _target_url) do
-    raise "TODO: implement WikiRace.Crawler.start/2"
+  def start(start_url, target_url) do
+    if Player.BFS.Page.valid_pair?(start_url, target_url) do
+      DynamicSupervisor.start_child(
+        WikiRace.CrawlerSupervisor,
+        {Player.BFS.Search, {start_url, target_url, []}}
+      )
+    else
+      {:error, :invalid_kiwix_urls}
+    end
   end
 
   @impl WikiRace.Crawler
-  def status(_pid) do
-    raise "TODO: implement WikiRace.Crawler.status/1"
-  end
+  def status(pid), do: Player.BFS.Progress.get(pid)
 end
